@@ -1,0 +1,58 @@
+# model-catalog-benchmark: manual job (no schedule), run by AI Governance from the Jobs UI
+# with "Run now with different parameters". Mirrors workspace job 423373587919640.
+resources:
+  jobs:
+    model_catalog_benchmark:
+      name: model-catalog-benchmark
+      description: >-
+        Model catalog benchmark, run manually by governance from the Jobs UI (Run now with different
+        parameters). Task 1 refreshes model_services from mc-* Unity Gateway services; task 2 benchmarks
+        the selected services on one use case, reading prompts, metrics and thresholds only from
+        serverless_nv91sa_catalog.model_catalog.use_case_config. use_case_id must be one of
+        fraud_detection | call_summarization | churn_detection. model_services: comma-separated mc-*
+        names or all. sample_size: all or N.
+      max_concurrent_runs: 1
+      queue:
+        enabled: true
+      tags:
+        project: model-catalog
+
+      parameters:
+        - name: model_services
+          default: ${var.default_model_services}
+        - name: use_case_id
+          default: ${var.default_use_case_id}
+        - name: sample_size
+          default: ${var.default_sample_size}
+        - name: judge_model
+          default: ${var.judge_model}
+
+      # Serverless compute: no cluster definition needed.
+      tasks:
+        - task_key: refresh_model_services
+          description: "Run refresh_model_services(): MERGE mc-* model services, tags and prices into model_catalog.model_services."
+          notebook_task:
+            notebook_path: ../notebooks/02_model_services.py
+            base_parameters:
+              run_mode: refresh
+          max_retries: 1
+          min_retry_interval_millis: 60000
+          retry_on_timeout: false
+          timeout_seconds: 1800
+
+        - task_key: run_benchmark
+          description: >-
+            Benchmark the selected mc-* services on one use case and append to benchmark_results /
+            benchmark_examples. No retries so a partial run is never written twice.
+          depends_on:
+            - task_key: refresh_model_services
+          notebook_task:
+            notebook_path: ../notebooks/03_run_benchmark.py
+            base_parameters:
+              model_services: "{{job.parameters.model_services}}"
+              use_case_id: "{{job.parameters.use_case_id}}"
+              sample_size: "{{job.parameters.sample_size}}"
+              judge_model: "{{job.parameters.judge_model}}"
+          max_retries: 0
+          disable_auto_optimization: true
+          timeout_seconds: 14400

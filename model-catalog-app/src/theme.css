@@ -1,0 +1,75 @@
+/* ============================================================
+   THEME - the single source of truth for branding.
+   Colours, fonts, radii, elevation, chart series and brand text
+   all live here; tailwind.config.ts and every component read
+   these variables, so swapping the brand means editing only this
+   file (plus the font <link> in index.html if the families change).
+
+   Copied from the Intelligent AI FinOps framework (Oat surfaces,
+   Navy ink, Lava accent, DM Sans / DM Mono).
+   ============================================================ */
+:root {
+  /* brand text (rendered via CSS content in the header and tab title area) */
+  --brand-title: "Model Catalog";
+  --brand-subtitle: "Governed AI model services for Co-operators teams";
+  --brand-mark-bg: #1B3139;
+  --brand-mark-fg: #FFFFFF;
+
+  /* surfaces */
+  --paper: #F9F7F4;      /* page background (Oat) */
+  --paper-2: #EFE9E1;    /* pressed / hover on paper elements */
+  --card: #FFFFFF;       /* every card */
+  --card-2: #F6F3EF;     /* quote blocks, insets inside cards */
+
+  /* lines - used sparingly, shadow does the separating */
+  --line: #E7E2DA;
+  --line-hi: #D6CFC4;
+
+  /* text + primary action surface (Navy) */
+  --ink: #1B3139;
+  --ink-2: #5A676C;
+  --ink-3: #8A9499;
+  --ink-hover: #2C4A55;
+
+  /* accent (Lava) - active nav, current journey step, focus ring, cost */
+  --accent: #FF3621;
+  --accent-2: #FF8A3D;   /* gradient end for the active nav pill */
+  --accent-wash: #FFF1EE;
+  --accent-line: #FFD3CA;
+
+  /* capability tiers */
+  --plum: #7A4E92;  --plum-wash: #F4EEF8;   /* frontier */
+  --amber: #C8802E; --amber-wash: #FBF1E3;  /* mid */
+  --moss: #4E8C63;  --moss-wash: #EDF5EF;   /* lightweight */
+
+  /* semantic states */
+  --info: #2272B4;  --info-wash: #ECF3FA;   /* experimental / informational */
+  --pass: #2E7D4F;  --pass-wash: #E8F4EC;   /* passes threshold / approved */
+  --fail: #B42318;  --fail-wash: #FDECEA;   /* fails threshold / rejected */
+  --warn: #A15C07;  --warn-wash: #FEF4E2;   /* needs attention / placeholder */
+
+  /* chart series (one colour per model, up to 6) */
+  --series-1: #2272B4;
+  --series-2: #7A4E92;
+  --series-3: #C8802E;
+  --series-4: #4E8C63;
+  --series-5: #1B3139;
+  --series-6: #FF3621;
+
+  /* radii */
+  --r-xl: 22px;  /* cards */
+  --r-lg: 16px;  /* inner blocks */
+  --r: 10px;     /* small insets, inputs */
+
+  /* type families */
+  --f-display: 'DM Sans', 'Inter', system-ui, sans-serif;
+  --f-body: 'DM Sans', 'Inter', system-ui, sans-serif;
+  --f-data: 'DM Mono', 'JetBrains Mono', ui-monospace, monospace;
+
+  /* elevation */
+  --lift:        0 1px 2px rgba(27,49,57,.04), 0 6px 18px rgba(27,49,57,.055);
+  --lift-hi:     0 2px 4px rgba(27,49,57,.05), 0 16px 34px rgba(27,49,57,.10);
+  --lift-float:  0 2px 5px rgba(27,49,57,.06), 0 10px 22px rgba(27,49,57,.08);
+  --lift-drawer: -12px 0 40px rgba(27,49,57,.16);
+  --scrim: rgba(27,49,57,.32);   /* drawer backdrop */
+}

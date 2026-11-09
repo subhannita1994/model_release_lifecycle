@@ -1,0 +1,16 @@
+# Bundle state
+.databricks/
+
+# App build output and dependencies
+model-catalog-app/node_modules/
+model-catalog-app/dist/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/

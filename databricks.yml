@@ -1,0 +1,42 @@
+# Declarative Automation Bundle for the Co-operators Model Release Lifecycle.
+# Deploys the model-catalog-benchmark job (refresh_model_services -> run_benchmark).
+#
+#   databricks bundle validate -t dev
+#   databricks bundle deploy   -t dev
+#   databricks bundle run model_catalog_benchmark -t dev \
+#     --params use_case_id=fraud_detection,model_services=all,sample_size=all
+
+bundle:
+  name: model-release-lifecycle
+
+include:
+  - resources/*.yml
+
+variables:
+  default_use_case_id:
+    description: Default use case for a benchmark run (fraud_detection | call_summarization | churn_detection).
+    default: fraud_detection
+  default_model_services:
+    description: Default model services to benchmark (comma-separated mc-* names or all).
+    default: all
+  default_sample_size:
+    description: Default sample size (all or N).
+    default: all
+  judge_model:
+    description: LLM judge used by the MLflow scorers.
+    default: system.ai.claude-sonnet-4-6
+
+targets:
+  dev:
+    default: true
+    mode: development
+    workspace:
+      host: https://fevm-serverless-nv91sa.cloud.databricks.com
+
+  prod:
+    mode: production
+    workspace:
+      host: https://fevm-serverless-nv91sa.cloud.databricks.com
+      root_path: /Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}
+    run_as:
+      user_name: ${workspace.current_user.userName}

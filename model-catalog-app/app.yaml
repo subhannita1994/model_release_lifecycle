@@ -1,0 +1,23 @@
+# Databricks Apps entrypoint. The platform runs `npm install` + `npm run build`
+# (package.json is present) and `pip install -r requirements.txt`, then this
+# command. FastAPI serves the built React frontend (./dist) and exposes /api.
+#
+# Auth: every query runs ON BEHALF OF THE SIGNED-IN USER (x-forwarded-access-token).
+# The app needs user API scopes `sql` and `dashboards.genie` (see README.md).
+command: ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000"]
+
+env:
+  - name: MC_CATALOG
+    value: "serverless_nv91sa_catalog"
+  - name: MC_SCHEMA
+    value: "model_catalog"
+  # SQL warehouse test_arc_1
+  - name: DATABRICKS_WAREHOUSE_ID
+    value: "fc56ed6708dfb7c1"
+  # Genie agent "Model Selection Advisor"
+  - name: GENIE_SPACE_ID
+    value: "01f1da09d0a91719ba75b4a3b2d4bdb9"
+  # Comma-separated emails treated as AI governance (sees all requests, can approve).
+  # Phase 1: the catalog owner only; swap for a group later.
+  - name: GOVERNANCE_USERS
+    value: "subhannita.sarcar@databricks.com"

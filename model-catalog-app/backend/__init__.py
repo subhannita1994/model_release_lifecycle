@@ -1,0 +1,1 @@
+"""Model catalog app backend."""
